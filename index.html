@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATOLL - Engineering the Future of Media</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-navy: #000000;
+            --dark-navy: #0a1526;
+            --cyber-cyan: #00f3ff;
+            --electric-purple: #9d4edd;
+            --seafoam-green: #4ef6b7;
+            --neon-pink: #ff2e93;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-navy);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(157, 78, 221, 0.03) 0%, transparent 40%);
+        }
+        
+        .glass-card {
+            background: linear-gradient(135deg, rgba(10, 25, 47, 0.3) 0%, rgba(5, 11, 20, 0.5) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 243, 255, 0.15);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+        
+        .glow-cyan {
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.8), 0 0 30px rgba(0, 243, 255, 0.3);
+        }
+        
+        .glow-purple {
+            text-shadow: 0 0 15px rgba(157, 78, 221, 0.8), 0 0 30px rgba(157, 78, 221, 0.3);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #00f3ff, #9d4edd, #4ef6b7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% 100%;
+            animation: gradient-shift 8s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #00a8ff 0%, #9d4edd 50%, #00f3ff 100%);
+            background-size: 200% 200%;
+            box-shadow: 
+                0 4px 20px rgba(0, 168, 255, 0.4),
+                0 0 30px rgba(157, 78, 221, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            background-position: 100% 100%;
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 30px rgba(0, 168, 255, 0.6),
+                0 0 40px rgba(157, 78, 221, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 2%;
+            background: linear-gradient(90deg, #00a8ff, #00f3ff, #9d4edd);
+            border-radius: 6px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent);
+            animation: progress-shimmer 3s infinite;
+        }
+        
+        @keyframes progress-shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, var(--icon-color), transparent 40%);
+            opacity: 0.5;
+            z-index: -1;
+            transition: all 0.4s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: translateY(-8px) scale(1.05);
+        }
+        
+        .feature-card:hover .feature-icon::before {
+            opacity: 0.8;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .countdown-item {
+            background: rgba(10, 25, 47, 0.4);
+            border-radius: 12px;
+            padding: 16px 12px;
+            min-width: 70px;
+            border: 1px solid rgba(0, 243, 255, 0.1);
+        }
+        
+        .countdown-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #00f3ff, #9d4edd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+        
+        .input-field {
+            background: rgba(10, 25, 47, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: #00f3ff;
+            box-shadow: 0 0 0 3px rgba(0, 243, 255, 0.1);
+            outline: none;
+        }
+        
+        .stat-card {
+            background: rgba(10, 25, 47, 0.3);
+            border-radius: 16px;
+            padding: 24px 20px;
+            border: 1px solid rgba(0, 243, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: rgba(0, 243, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        @media (max-width: 768px) {
+            .glass-card {
+                padding: 24px !important;
+            }
+            
+            .countdown-item {
+                min-width: 60px;
+                padding: 12px 8px;
+            }
+            
+            .countdown-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Animated Background Particles -->
+    <div id="particles-container"></div>
+    
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 md:py-16 max-w-6xl relative z-10">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12 md:mb-20">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-satellite-dish text-white text-xl"></i>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cyan-400 animate-pulse"></div>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">ATOLL</h1>
+                    <p class="text-xs text-gray-400 code-font">v0.9.2-alpha</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2 px-4 py-2 rounded-full bg-cyan-900/20 border border-cyan-800/30">
+                    <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+                    <span class="text-sm font-medium text-cyan-300">MVP Launch: Q4 2024</span>
+                </div>
+                <div class="px-4 py-2 rounded-full glass-card border border-purple-900/30">
+                    <span class="text-cyan-300 font-medium text-sm">Coming Soon</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <div class="glass-card p-8 md:p-12 mb-16 md:mb-24 relative overflow-hidden">
+            <!-- Decorative elements -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-cyan-500/5 blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-purple-500/5 blur-3xl"></div>
+            
+            <div class="relative z-10">
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-cyan-900/20 border border-cyan-800/30 mb-6">
+                        <div class="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse"></div>
+                        <span class="text-sm text-cyan-300 font-medium">Next-Gen Media Infrastructure</span>
+                    </div>
+                    
+                    <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text">Engineering the Future of Media</h2>
+                    
+                    <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-10">
+                        A high-efficiency orchestration platform for global-scale video pipelines. 
+                        <span class="font-semibold text-cyan-200">Modular. Memory-safe. Globally resilient.</span>
+                    </p>
+                    
+                    <!-- Countdown to MVP -->
+                    <div class="mb-12">
+                        <p class="text-gray-400 mb-4">MVP Launch in</p>
+                        <div class="flex justify-center space-x-4 md:space-x-6">
+                            <div class="countdown-item">
+                                <div class="countdown-value">06</div>
+                                <div class="text-gray-400 text-xs mt-2">Months</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value">16</div>
+                                <div class="text-gray-400 text-xs mt-2">Days</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value">08</div>
+                                <div class="text-gray-400 text-xs mt-2">Hours</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="max-w-2xl mx-auto mb-12">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-cyan-300 font-medium">Platform Development</span>
+                            <span class="text-cyan-300 font-bold text-xl">2%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="flex justify-between mt-2">
+                            <span class="text-gray-500 text-sm">Alpha Testing</span>
+                            <span class="text-gray-500 text-sm">MVP Launch</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Waitlist Form -->
+                <div class="max-w-2xl mx-auto">
+                    <p class="text-center text-gray-300 mb-6 text-lg">Join the exclusive waitlist for early access</p>
+                    <form id="waitlist-form" class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-grow relative">
+                            <input 
+                                type="email" 
+                                placeholder="professional@email.com" 
+                                class="input-field w-full px-6 py-5 rounded-xl text-white placeholder-gray-500 code-font"
+                                required
+                            >
+                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-400">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary px-10 py-5 rounded-xl font-semibold text-white text-lg">
+                            Request Access
+                        </button>
+                    </form>
+                    <p class="text-gray-500 text-sm text-center mt-6">
+                        <i class="fas fa-shield-alt mr-1"></i> Enterprise-grade security • No spam • Priority onboarding
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="mb-20 md:mb-28">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-bold mb-6 glow-cyan text-cyan-300">Architected for Scale</h3>
+                <p class="text-gray-400 max-w-2xl mx-auto text-lg">
+                    Engineered from the ground up for the most demanding media workflows
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                <!-- Feature 1 -->
+                <div class="feature-card glass-card p-8 rounded-2xl border border-cyan-900/20 hover:border-cyan-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-900/10">
+                    <div class="feature-icon" style="--icon-color: #00f3ff; background: rgba(0, 243, 255, 0.1); color: #00f3ff;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-cyan-300">Zero-Cost Performance</h4>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Achieve unprecedented throughput with minimal resource overhead through advanced systems programming.
+                    </p>
+                    <div class="flex items-center text-cyan-400 text-sm font-medium">
+                        <div class="w-2 h-2 rounded-full bg-cyan-400 mr-2 animate-pulse"></div>
+                        <span class="code-font">99.9% latency under 50ms</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card glass-card p-8 rounded-2xl border border-purple-900/20 hover:border-purple-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/10">
+                    <div class="feature-icon" style="--icon-color: #9d4edd; background: rgba(157, 78, 221, 0.1); color: #9d4edd;">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-purple-300">Autonomous Orchestration</h4>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Intelligent scaling from zero to global capacity with self-healing infrastructure and predictive load balancing.
+                    </p>
+                    <div class="flex items-center text-purple-400 text-sm font-medium">
+                        <div class="w-2 h-2 rounded-full bg-purple-400 mr-2 animate-pulse"></div>
+                        <span class="code-font">Multi-cloud & edge-native</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card glass-card p-8 rounded-2xl border border-green-900/20 hover:border-green-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-green-900/10">
+                    <div class="feature-icon" style="--icon-color: #4ef6b7; background: rgba(78, 246, 183, 0.1); color: #4ef6b7;">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-4 text-green-300">Hardware-Accelerated</h4>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Guarantee 99.999% uptime with fault-tolerant data paths and hardware-optimized processing pipelines.
+                    </p>
+                    <div class="flex items-center text-green-400 text-sm font-medium">
+                        <div class="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></div>
+                        <span class="code-font">Global edge resilience</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="glass-card p-8 md:p-12 rounded-2xl mb-16">
+            <h3 class="text-2xl md:text-3xl font-bold text-center mb-12 text-cyan-300">Built for Performance at Scale</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="stat-card text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-cyan-300 mb-2">200ms</div>
+                    <div class="text-gray-400">End-to-end latency</div>
+                    <div class="text-cyan-400 text-sm mt-3 code-font">guaranteed SLA</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-purple-300 mb-2">99.999%</div>
+                    <div class="text-gray-400">Uptime SLA</div>
+                    <div class="text-purple-400 text-sm mt-3 code-font">fault-tolerant design</div>
+                </div>
+                <div class="stat-card text-center">
+                    <div class="text-4xl md:text-5xl font-bold text-green-300 mb-2">60%</div>
+                    <div class="text-gray-400">Cost reduction</div>
+                    <div class="text-green-400 text-sm mt-3 code-font">vs. traditional solutions</div>
+                </div>
+            </div>
+            
+            <div class="mt-10 pt-8 border-t border-gray-800/50">
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-6 md:mb-0">
+                        <h4 class="text-xl font-bold text-cyan-300 mb-2">Technical Architecture</h4>
+                        <p class="text-gray-400 max-w-lg">
+                            Built with modern systems programming languages and designed for heterogeneous compute environments.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="px-4 py-2 rounded-full bg-cyan-900/30 border border-cyan-800/50 text-cyan-300 text-sm">
+                            <i class="fas fa-microchip mr-2"></i>Hardware Acceleration
+                        </div>
+                        <div class="px-4 py-2 rounded-full bg-purple-900/30 border border-purple-800/50 text-purple-300 text-sm">
+                            <i class="fas fa-network-wired mr-2"></i>Edge Orchestration
+                        </div>
+                        <div class="px-4 py-2 rounded-full bg-green-900/30 border border-green-800/50 text-green-300 text-sm">
+                            <i class="fas fa-lock mr-2"></i>Memory-Safe
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="pt-8 border-t border-gray-800/50">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-satellite-dish text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">ATOLL</span>
+                    </div>
+                    <p class="text-gray-500 text-sm">High-efficiency media infrastructure platform</p>
+                </div>
+                
+                <div class="flex flex-col items-center md:items-end space-y-3">
+                    <div class="flex items-center space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-cyan-300 transition-colors">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                    <div class="text-gray-500 text-sm">
+                        <i class="far fa-copyright mr-1"></i>
+                        2024 Atoll Media Infrastructure. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Create animated particles
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const colors = ['#00f3ff', '#9d4edd', '#4ef6b7', '#ff2e93'];
+            const particleCount = window.innerWidth < 768 ? 40 : 80;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 1px and 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random color
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.backgroundColor = color;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.6 + 0.1;
+                
+                // Random animation
+                const duration = 20 + Math.random() * 20;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                // Define float animation
+                const style = document.createElement('style');
+                if (!document.querySelector('#float-animation')) {
+                    style.id = 'float-animation';
+                    style.textContent = `
+                        @keyframes float {
+                            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+                            25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg); }
+                            50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg); }
+                            75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Update countdown
+        function updateCountdown() {
+            // MVP launch date: 4 months from now
+            const launchDate = new Date();
+            launchDate.setMonth(launchDate.getMonth() + 4);
+            
+            const now = new Date();
+            const diff = launchDate - now;
+            
+            const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            // Update display
+            document.querySelectorAll('.countdown-value')[0].textContent = months.toString().padStart(2, '0');
+            document.querySelectorAll('.countdown-value')[1].textContent = days.toString().padStart(2, '0');
+            document.querySelectorAll('.countdown-value')[2].textContent = hours.toString().padStart(2, '0');
+        }
+        
+        // Handle form submission
+        document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = this.querySelector('input[type="email"]');
+            const button = this.querySelector('button');
+            const buttonText = button.querySelector('span') || button;
+            
+            // Simple validation
+            if (!emailInput.value || !emailInput.value.includes('@') || !emailInput.value.includes('.')) {
+                emailInput.style.borderColor = '#ff2e93';
+                emailInput.style.boxShadow = '0 0 0 3px rgba(255, 46, 147, 0.1)';
+                return;
+            }
+            
+            // Show success state
+            const originalText = buttonText.textContent;
+            buttonText.innerHTML = '<i class="fas fa-check mr-2"></i>Access Requested';
+            button.style.background = 'linear-gradient(135deg, #4ef6b7 0%, #00f3ff 100%)';
+            button.style.boxShadow = '0 4px 20px rgba(78, 246, 183, 0.4), 0 0 30px rgba(0, 243, 255, 0.3)';
+            button.disabled = true;
+            
+            // Add to list animation
+            const confirmation = document.createElement('div');
+            confirmation.className = 'mt-4 p-4 rounded-xl bg-gradient-to-r from-cyan-900/20 to-purple-900/20 border border-cyan-800/30';
+            confirmation.innerHTML = `
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center mr-3">
+                        <i class="fas fa-check text-cyan-400"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-cyan-300">You're on the list!</p>
+                        <p class="text-sm text-gray-400">We'll contact you at <span class="text-cyan-200">${emailInput.value}</span> for early access</p>
+                    </div>
+                </div>
+            `;
+            
+            this.parentNode.insertBefore(confirmation, this.nextSibling);
+            
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                emailInput.value = '';
+                emailInput.style.borderColor = '';
+                emailInput.style.boxShadow = '';
+            }, 5000);
+        });
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            updateCountdown();
+            setInterval(updateCountdown, 3600000); // Update every hour
+            
+            // Add scroll animation for feature cards
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe feature cards
+            document.querySelectorAll('.feature-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.2}s, transform 0.6s ease ${index * 0.2}s`;
+                observer.observe(card);
+            });
+            
+            // Add typing effect to headline
+            const headline = document.querySelector('.gradient-text');
+            if (headline) {
+                const text = headline.textContent;
+                headline.textContent = '';
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        headline.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 50);
+                    }
+                };
+                // Start typing after a short delay
+                setTimeout(typeWriter, 500);
+            }
+        });
+    </script>
+</body>
+</html>
